@@ -15,14 +15,11 @@
     </xsl:template>
 
     <xsl:template match="path">
+        <xsl:text>"</xsl:text>
         <xsl:value-of select="attribute::d"/>
-        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>",&#xa;</xsl:text>
     </xsl:template>
 
     <xsl:template match="text">
-        <xsl:value-of select="attribute::transform"/>
-        <xsl:text>,</xsl:text>
-            <xsl:apply-templates/>
-        <xsl:text>&#xa;</xsl:text>
     </xsl:template>
 </xsl:stylesheet>
