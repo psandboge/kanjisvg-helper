@@ -27,16 +27,26 @@ public class Convert {
         String pathTemplate = "/pathtemplate.xsl";
         String textTemplate = "/texttemplate.xsl";
 
-        String svgFile = sourcePath + "/03041.svg";
         File dir = new File(sourcePath);
-        List<String> names = new ArrayList<String>(Arrays.asList(dir.list()));
+        List<String> names = new ArrayList<>(Arrays.asList(dir.list()));
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        String extract = "{\"hiragana\": [";
         for (String name: names) {
+            if (!name.endsWith(".svg")) {
+                continue;
+            }
+            char character = (char) Integer.parseInt(name.substring(0, name.indexOf('.')), 16);
+            extract += "{\"" + character + "\": { \"path\": [ ";
             String path = parseFile(pathTemplate, sourcePath + "/" + name, factory);
-            System.out.println(path);
+            extract += path;
+            extract += "], \"text\": [ ";
             String text = parseFile(textTemplate, sourcePath + "/" + name, factory);
-            System.out.println(text);
+            extract += text;
+            extract += "]}},\n";
         }
+        extract = extract.substring(0, extract.length() - 2);
+        extract += "]}";
+        System.out.println(extract);
     }
 
     private static String parseFile(String template, String svgFile, DocumentBuilderFactory factory) {

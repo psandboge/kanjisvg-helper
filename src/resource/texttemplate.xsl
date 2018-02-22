@@ -17,11 +17,19 @@
     <xsl:template match="path">
     </xsl:template>
 
-    <xsl:template match="text">
-        <xsl:text>"</xsl:text>
+    <xsl:template match="text[not(position()=last())]">
+        <xsl:text>{ "transform": "</xsl:text>
         <xsl:value-of select="attribute::transform"/>
-        <xsl:text>",</xsl:text>
-            <xsl:apply-templates/>
-        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>", "value": "</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>"},&#xa;</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="text[position()=last()]">
+        <xsl:text>{ "transform": "</xsl:text>
+        <xsl:value-of select="attribute::transform"/>
+        <xsl:text>", "value": "</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>"}&#xa;</xsl:text>
     </xsl:template>
 </xsl:stylesheet>

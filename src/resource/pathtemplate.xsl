@@ -14,10 +14,16 @@
             <xsl:apply-templates/>
     </xsl:template>
 
-    <xsl:template match="path">
+    <xsl:template match="path[not(position()=last())]">
         <xsl:text>"</xsl:text>
         <xsl:value-of select="attribute::d"/>
         <xsl:text>",&#xa;</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="path[position()=last()]">
+        <xsl:text>"</xsl:text>
+        <xsl:value-of select="attribute::d"/>
+        <xsl:text>"&#xa;</xsl:text>
     </xsl:template>
 
     <xsl:template match="text">
