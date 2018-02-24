@@ -30,22 +30,22 @@ public class Convert {
         File dir = new File(sourcePath);
         List<String> names = new ArrayList<>(Arrays.asList(dir.list()));
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        String extract = "{\"hiragana\": [";
+        String extract = "{\"hiragana\": {\n";
         for (String name: names) {
             if (!name.endsWith(".svg")) {
                 continue;
             }
             char character = (char) Integer.parseInt(name.substring(0, name.indexOf('.')), 16);
-            extract += "{\"" + character + "\": { \"path\": [ ";
+            extract += "\"" + character + "\": { \"path\": [ ";
             String path = parseFile(pathTemplate, sourcePath + "/" + name, factory);
             extract += path;
             extract += "], \"text\": [ ";
             String text = parseFile(textTemplate, sourcePath + "/" + name, factory);
             extract += text;
-            extract += "]}},\n";
+            extract += "]},\n";
         }
         extract = extract.substring(0, extract.length() - 2);
-        extract += "]}";
+        extract += "}}";
         System.out.println(extract);
     }
 
